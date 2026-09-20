@@ -1,7 +1,8 @@
 import express from "express";
-import mongoose from "mongoose"
 import Router from "./routes/administradorRoutes.js";
 import routerLocacao from "./routes/locacaoRoutes.js";
+
+import mongoose from "./config/db-connections.js";
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(Router);
 app.use(routerLocacao);
 
-mongoose.connect("mongodb://127.0.0.1:27017/locacaoGames")
+//mongoose.connect("mongodb://127.0.0.1:27017/locacaoGames")
 
 const port = 8080;
 app.listen(port,(e) => {
