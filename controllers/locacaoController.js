@@ -27,7 +27,7 @@ const createLocacao = async (req, res) => {
             returnDate,
             status);
 
-        res.status(201).json({message:"Usuário criado com sucesso", locacao});
+        res.status(201).json({message:"Locação criado com sucesso", locacao});
     } catch (error) {
         console.error(error.message);
 
