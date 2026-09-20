@@ -1,0 +1,33 @@
+{
+  "name": "locacao-api-atividade",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaoalexandre77/Locacao-API-Atividade.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/joaoalexandre77/Locacao-API-Atividade/issues"
+  },
+  "homepage": "https://github.com/joaoalexandre77/Locacao-API-Atividade#readme",
+  "dependencies": {
+    "argon2": "^0.45.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.6.0",
+    "mongoose": "^9.10.1",
+    "nodemon": "^3.1.14",
+    "swagger-themes": "^1.4.3",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
