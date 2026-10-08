@@ -6,6 +6,10 @@ class AuthService {
     async login(email, password) {
         const user = await Administrador.findOne({email});
 
+        console.log("E-mail recebido:", email);
+    console.log("Senha recebida:", password);
+    console.log("Hash no banco:", user?.password);
+
         if(!user) throw new Error("INVALID_CREDENTIAL");
 
         const isValidPassword = await argon2.verify(user.password, password);

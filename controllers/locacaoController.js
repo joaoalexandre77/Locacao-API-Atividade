@@ -87,26 +87,58 @@ const updateLocacao = async (req, res) => {
     try {
         const idLocacao = req.params.id;
 
-        const {name = "", email = "", phone = "", address = [], games = []} = req.body;
+        const {
+            user = {},
+            games = []
+        } = req.body;
+
+        const {
+            name = "",
+            email = "",
+            phone = "",
+            address = []
+        } = user;
 
         const cleanName = name.trim();
         const cleanEmail = email.trim().toLowerCase();
 
-        if (!cleanName || !cleanEmail) return res.status(400).json({error: "Nome ou E-mail não podem estar vazios"});
+        if (!cleanName || !cleanEmail) {
+            return res.status(400).json({
+                error: "Nome ou E-mail não podem estar vazios"
+            });
+        }
 
-        if (!cleanEmail.endsWith("@gmail.com")) return res.status(400).json({error: "Apenas contas Gmail são permitidas"});
+        if (!cleanEmail.endsWith("@gmail.com")) {
+            return res.status(400).json({
+                error: "Apenas contas Gmail são permitidas"
+            });
+        }
 
-        await locacaoService.updateLocacao(idLocacao,cleanName,cleanEmail,phone,address, games);
+        await locacaoService.updateLocacao(
+            idLocacao,
+            cleanName,
+            cleanEmail,
+            phone,
+            address,
+            games
+        );
 
-        return res.status(200).json({message: "Locação atualizada com sucesso"});
+        return res.status(200).json({
+            message: "Locação atualizada com sucesso"
+        });
 
     } catch (error) {
         console.error(error);
 
-        if (error.message === "ID_NOT_EXISTS") return res.status(404).json({error: "Locação não encontrada"});
+        if (error.message === "ID_NOT_EXISTS") {
+            return res.status(404).json({
+                error: "Locação não encontrada"
+            });
+        }
 
-        return res.status(500).json({error: "Erro interno do servidor"});
+        return res.status(500).json({
+            error: "Erro interno do servidor"
+        });
     }
 };
-
 export {createLocacao, showLocacao, deleteLocacao, updateLocacao, showAllLocacao};
