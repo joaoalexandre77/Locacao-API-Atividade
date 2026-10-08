@@ -1,0 +1,1300 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Locação",
+    "description": "Uma API de locação de jogos",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "servidor local"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "logando no sistema",
+        "description": "realiza o login do usuario no sistema",
+        "tags": [
+          "Login"
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Requisição",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "jocieli@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "65f123456789abcdef012345"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Administrador"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "admin@exemplo.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "E-mail e senha não podem estar vazios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "E-mail e senha não podem estar vazios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "E-mail ou senha inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "E-mail ou senha invalidos"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno no servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/administrador": {
+      "post": {
+        "summary": "Cria um novo administrador",
+        "description": "Cadastra um novo administrador no sistema",
+        "tags": [
+          "Administradores"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Joci"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jocieli@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Administrador criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Administrador criado com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação dos dados enviados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nome ou E-mail não podem estar vazios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflito de e-mail existente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "E-mail já existente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Exibe dados do administrador",
+        "description": "Retorna os detalhes do administrador logado",
+        "tags": [
+          "Administradores"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do administrador retornados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "administrador": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65f123456789abcdef012345"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Maria Oliveira"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "maria@gmail.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Administrador não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID não existe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza o administrador",
+        "description": "Atualiza as informações do administrador logado",
+        "tags": [
+          "Administradores"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Jocilei123"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jocieli.auterado@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Administrador atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Administrador atualizado com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação dos dados passados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nome ou E-mail não podem estar vazios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Administrador não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID não existe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta o administrador",
+        "description": "Remove o registro do administrador logado",
+        "tags": [
+          "Administradores"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Administrador deletado com sucesso"
+          },
+          "404": {
+            "description": "Administrador não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "ID não existe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/allLocacao": {
+      "get": {
+        "summary": "Lista todas as locações",
+        "description": "Retorna uma lista com todas as locações cadastradas",
+        "tags": [
+          "Locações"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de locações retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "locacoes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "65f123456789abcdef012300"
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Carlos Silva"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "carlos@gmail.com"
+                              },
+                              "phone": {
+                                "type": "string",
+                                "example": "13999998888"
+                              },
+                              "address": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "street": {
+                                      "type": "string",
+                                      "example": "Rua das Flores"
+                                    },
+                                    "number": {
+                                      "type": "integer",
+                                      "example": 123
+                                    },
+                                    "neighborhood": {
+                                      "type": "string",
+                                      "example": "Centro"
+                                    },
+                                    "city": {
+                                      "type": "string",
+                                      "example": "São Paulo"
+                                    },
+                                    "state": {
+                                      "type": "string",
+                                      "example": "SP"
+                                    },
+                                    "zipCode": {
+                                      "type": "string",
+                                      "example": "11900000"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "games": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "Catan"
+                                },
+                                "year": {
+                                  "type": "string",
+                                  "example": "1995"
+                                },
+                                "price": {
+                                  "type": "string",
+                                  "example": "150.00"
+                                },
+                                "quantity": {
+                                  "type": "integer",
+                                  "example": 1
+                                }
+                              }
+                            }
+                          },
+                          "dataLocacao": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-09-22T20:00:00.000Z"
+                          },
+                          "returnDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2026-10-01T20:00:00.000Z"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "Ativo",
+                              "inativo"
+                            ],
+                            "example": "Ativo"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locacao": {
+      "post": {
+        "summary": "Cria uma nova locação",
+        "description": "Registra uma nova locação no sistema contendo o usuário e os jogos",
+        "tags": [
+          "Locações"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Carlos Silva"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "carlos@gmail.com"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "example": "13999998888"
+                      },
+                      "address": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "street": {
+                              "type": "string",
+                              "example": "Rua das Flores"
+                            },
+                            "number": {
+                              "type": "integer",
+                              "example": 123
+                            },
+                            "neighborhood": {
+                              "type": "string",
+                              "example": "Centro"
+                            },
+                            "city": {
+                              "type": "string",
+                              "example": "São Paulo"
+                            },
+                            "state": {
+                              "type": "string",
+                              "example": "SP"
+                            },
+                            "zipCode": {
+                              "type": "string",
+                              "example": "11900000"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "games": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Catan"
+                        },
+                        "year": {
+                          "type": "string",
+                          "example": "1995"
+                        },
+                        "price": {
+                          "type": "string",
+                          "example": "150.00"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "example": 1
+                        }
+                      }
+                    }
+                  },
+                  "dataLocacao": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-09-22T20:00:00.000Z"
+                  },
+                  "returnDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-10-01T20:00:00.000Z"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "Ativo",
+                      "inativo"
+                    ],
+                    "example": "Ativo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Locação criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Locação criado com sucesso"
+                    },
+                    "locacao": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65f123456789abcdef012300"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Carlos Silva"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "carlos@gmail.com"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "example": "13999998888"
+                            },
+                            "address": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "street": {
+                                    "type": "string",
+                                    "example": "Rua das Flores"
+                                  },
+                                  "number": {
+                                    "type": "integer",
+                                    "example": 123
+                                  },
+                                  "neighborhood": {
+                                    "type": "string",
+                                    "example": "Centro"
+                                  },
+                                  "city": {
+                                    "type": "string",
+                                    "example": "São Paulo"
+                                  },
+                                  "state": {
+                                    "type": "string",
+                                    "example": "SP"
+                                  },
+                                  "zipCode": {
+                                    "type": "string",
+                                    "example": "11900000"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "games": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Catan"
+                              },
+                              "year": {
+                                "type": "string",
+                                "example": "1995"
+                              },
+                              "price": {
+                                "type": "string",
+                                "example": "150.00"
+                              },
+                              "quantity": {
+                                "type": "integer",
+                                "example": 1
+                              }
+                            }
+                          }
+                        },
+                        "dataLocacao": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2026-09-22T20:00:00.000Z"
+                        },
+                        "returnDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2026-10-01T20:00:00.000Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "Ativo",
+                            "inativo"
+                          ],
+                          "example": "Ativo"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro na validação do usuário ou e-mail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nome ou E-mail não podem estar vazios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "E-mail do usuário já possui cadastro/locação ativa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "E-mail já existente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locacao/{id}": {
+      "get": {
+        "summary": "Exibe uma locação pelo ID",
+        "description": "Retorna as informações da locação identificada pelo id passado como parâmetro de rota",
+        "tags": [
+          "Locações"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID único da locação",
+            "schema": {
+              "type": "string",
+              "example": "65f123456789abcdef012300"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Locação localizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "locacao": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "65f123456789abcdef012300"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Carlos Silva"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "carlos@gmail.com"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "example": "13999998888"
+                            },
+                            "address": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "street": {
+                                    "type": "string",
+                                    "example": "Rua das Flores"
+                                  },
+                                  "number": {
+                                    "type": "integer",
+                                    "example": 123
+                                  },
+                                  "neighborhood": {
+                                    "type": "string",
+                                    "example": "Centro"
+                                  },
+                                  "city": {
+                                    "type": "string",
+                                    "example": "São Paulo"
+                                  },
+                                  "state": {
+                                    "type": "string",
+                                    "example": "SP"
+                                  },
+                                  "zipCode": {
+                                    "type": "string",
+                                    "example": "11900000"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "games": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Catan"
+                              },
+                              "year": {
+                                "type": "string",
+                                "example": "1995"
+                              },
+                              "price": {
+                                "type": "string",
+                                "example": "150.00"
+                              },
+                              "quantity": {
+                                "type": "integer",
+                                "example": 1
+                              }
+                            }
+                          }
+                        },
+                        "dataLocacao": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2026-09-22T20:00:00.000Z"
+                        },
+                        "returnDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2026-10-01T20:00:00.000Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "Ativo",
+                            "inativo"
+                          ],
+                          "example": "Ativo"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Locação não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Locação não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma locação pelo ID",
+        "description": "Atualiza os dados de usuário e jogos de uma locação específica através do seu ID",
+        "tags": [
+          "Locações"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID único da locação",
+            "schema": {
+              "type": "string",
+              "example": "65f123456789abcdef012300"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Carlos Silva Alterado"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "carlos.novo@gmail.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "13999999999"
+                  },
+                  "address": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "street": {
+                          "type": "string",
+                          "example": "Avenida Principal"
+                        },
+                        "number": {
+                          "type": "integer",
+                          "example": 456
+                        },
+                        "neighborhood": {
+                          "type": "string",
+                          "example": "Centro"
+                        },
+                        "city": {
+                          "type": "string",
+                          "example": "São Paulo"
+                        },
+                        "state": {
+                          "type": "string",
+                          "example": "SP"
+                        },
+                        "zipCode": {
+                          "type": "string",
+                          "example": "11900000"
+                        }
+                      }
+                    }
+                  },
+                  "games": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Catan"
+                        },
+                        "year": {
+                          "type": "string",
+                          "example": "1995"
+                        },
+                        "price": {
+                          "type": "string",
+                          "example": "150.00"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "example": 2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Locação atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Locação atualizada com sucesso"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados incorretos ou e-mail inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nome ou E-mail não podem estar vazios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Locação não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Locação não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta uma locação pelo ID",
+        "description": "Remove uma locação do banco de dados utilizando o parâmetro de rota id",
+        "tags": [
+          "Locações"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID único da locação",
+            "schema": {
+              "type": "string",
+              "example": "65f123456789abcdef012300"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Locação removida com sucesso"
+          },
+          "404": {
+            "description": "Locação não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Locação não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

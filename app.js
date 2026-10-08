@@ -1,6 +1,8 @@
 import express from "express";
 import Router from "./routes/administradorRoutes.js";
 import routerLocacao from "./routes/locacaoRoutes.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./config/swagger.json" with { type: "json" };
 
 import mongoose from "./config/db-connections.js";
 
@@ -8,6 +10,9 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false})); 
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.use(Router);
 app.use(routerLocacao);
